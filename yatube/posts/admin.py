@@ -2,7 +2,17 @@ from django.contrib import admin
 from .models import Post, Group
 
 class PostAdmin(admin.ModelAdmin):
-    # Перечисляем поля, которые должны отображаться в админке
+    """Конфигурация отображения данных.
+
+    Attributes:
+        list_display: отображаемые поля.
+        list_editable: изменение поле group в любом посте.
+        search_fields: интерфейс для поиска по тексту постов.
+        list_filter: возможность фильтрации по дате.
+        empty_value_display: «пусто» становится ссылкой, для перехода на
+                             страницу редактирования поста.
+    """
+
     list_display = (
         'pk',
         'text',
@@ -10,15 +20,11 @@ class PostAdmin(admin.ModelAdmin):
         'author',
         'group',
     )
-    # Это позволит изменять поле group в любом посте
     list_editable = ('group',)
-    # Добавляем интерфейс для поиска по тексту постов
     search_fields = ('text',)
-    # Добавляем возможность фильтрации по дате
     list_filter = ('pub_date',)
     empty_value_display = '-пусто-'
 
-# При регистрации модели Post источником конфигурации для неё назначаем
-# класс PostAdmin
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(Group)

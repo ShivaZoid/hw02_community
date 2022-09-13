@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Post, Group
 
+
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     """Конфигурация отображения данных.
 
@@ -9,8 +11,6 @@ class PostAdmin(admin.ModelAdmin):
         list_editable: изменение поле group в любом посте.
         search_fields: интерфейс для поиска по тексту постов.
         list_filter: возможность фильтрации по дате.
-        empty_value_display: «пусто» становится ссылкой, для перехода на
-                             страницу редактирования поста.
     """
 
     list_display = (
@@ -26,5 +26,20 @@ class PostAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-admin.site.register(Post, PostAdmin)
-admin.site.register(Group)
+@admin.register(Group)
+class GroupAdmin(admin.ModelAdmin):
+    """Конфигурация отображения данных.
+
+    Attributes:
+        list_display: отображаемые поля.
+    """
+
+    list_display = (
+        'pk',
+        'title',
+        'slug',
+        'description',
+
+    )
+    search_fields = ('title',)
+    empty_value_display = '-пусто-'

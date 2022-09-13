@@ -17,7 +17,6 @@ class Group(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField()
 
-
     def __str__(self) -> str:
         return self.title
 

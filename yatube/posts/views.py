@@ -3,13 +3,15 @@ from .models import Post, Group
 from typing import Any, Dict
 from django.core.paginator import Paginator
 
+limitation = 5
+
 
 def index(request):
     """Главная страница."""
-    posts = Post.objects.order_by('-pub_date')
-    p = Paginator(posts, 5)
+    posts = Post.objects.select_related('author').order_by('-pub_date')
+    posts_paginator = Paginator(posts, limitation)
     page_number = request.GET.get('page')
-    page_obj = p.get_page(page_number)
+    page_obj = posts_paginator.get_page(page_number)
     title: str = 'Последние обновления на сайте.'
     context: Dict[str, Any] = {
         'posts': posts,
@@ -22,7 +24,7 @@ def index(request):
 def group_posts(request, slug):
     """Страницы сообществ."""
     group = get_object_or_404(Group, slug=slug)
-    posts = group.posts.order_by('-pub_date')
+    posts = group.posts.select_related("author").order_by('-pub_date')
     context: Dict[str, Any] = {
         'title': group.title,
         'group': group,

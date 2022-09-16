@@ -3,13 +3,13 @@ from .models import Post, Group
 from typing import Any, Dict
 from django.core.paginator import Paginator
 
-limitation = 5
+ITEMS_PER_PAGE = 5
 
 
 def index(request):
     """Главная страница."""
     posts = Post.objects.select_related('author').order_by('-pub_date')
-    posts_paginator = Paginator(posts, limitation)
+    posts_paginator = Paginator(posts, ITEMS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = posts_paginator.get_page(page_number)
     title: str = 'Последние обновления на сайте.'
